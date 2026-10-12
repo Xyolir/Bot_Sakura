@@ -1,406 +1,357 @@
-/* ===== DASHBOARD ===== */
+/* ==========================================================
+   DASHBOARD — s'appuie sur les variables de style.css
+   ========================================================== */
 
 .dash{
-    width:min(1200px,90%);
-    margin:auto;
-    padding-top:4rem;
-    position:relative;
-    z-index:2;
+    flex:1;
+    width:min(1160px, 90%);
+    margin:0 auto;
+    padding-top:3rem;
+}
+
+.tag{
+    font-size:.9rem;
+    color:var(--muted);
+    margin-bottom:.3rem;
 }
 
 .panel h1{
-    font-size:2.6rem;
+    font-size:clamp(1.8rem, 4vw, 2.6rem);
     font-weight:300;
-    letter-spacing:4px;
-    margin-bottom:0.8rem;
+    letter-spacing:-.02em;
+    line-height:1.15;
+    margin-bottom:.8rem;
 }
 
 .panel .description{
-    width:34rem;
-    max-width:100%;
-    line-height:1.8;
-    opacity:.8;
+    max-width:36rem;
+    color:var(--muted);
     margin-bottom:2rem;
 }
 
-/* ===== USER BADGE (nav) ===== */
-.user-badge{
-    display:flex;
-    align-items:center;
-    gap:0.8rem;
-}
+/* ===== BADGE UTILISATEUR (nav) ===== */
+.user-badge{ display:flex; align-items:center; gap:.7rem; font-size:.9rem; }
 
 .avatar{
-    width:2rem;
-    height:2rem;
+    width:1.9rem;
+    height:1.9rem;
     border-radius:50%;
-    border:1px solid rgba(0,0,0,.1);
+    border:1px solid var(--line);
+    background:var(--surface-2);
 }
 
-.btn-small{
-    padding:0.5rem 1rem;
-    font-size:0.8rem;
-}
+.back-btn{ margin-bottom:1.8rem; }
 
-.back-btn{
-    margin-bottom:2rem;
-    display:inline-block;
-}
-
-/* ===== GUILD GRID ===== */
+/* ===== LISTE DES SERVEURS ===== */
 .guild-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(16rem, 1fr));
-    gap:1.5rem;
+    gap:1rem;
 }
 
 .guild-card{
-    width:100%;
-    background:rgba(255,255,255,.35);
-    backdrop-filter:blur(8px);
-    border:1px solid rgba(0,0,0,.08);
-    padding:1.5rem;
     display:flex;
     align-items:center;
     gap:1rem;
+    padding:1.1rem 1.2rem;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
     cursor:pointer;
-    transition:.3s;
+    transition:border-color .2s, background .2s;
 }
 
-.guild-card:hover{
-    border-color:#9bbdc0;
-    transform:translateY(-2px);
-}
-
-.guild-card.disabled{
-    cursor:default;
-    opacity:.55;
-}
-
-.guild-card.disabled:hover{
-    transform:none;
-    border-color:rgba(0,0,0,.08);
-}
+.guild-card:hover{ border-color:var(--accent); }
+.guild-card.disabled{ cursor:default; opacity:.6; }
+.guild-card.disabled:hover{ border-color:var(--line); }
 
 .guild-icon{
-    width:3rem;
-    height:3rem;
+    width:2.8rem;
+    height:2.8rem;
     border-radius:50%;
-    background:#bfc8ca;
+    background:var(--surface-2);
     flex-shrink:0;
     object-fit:cover;
 }
 
-.guild-info h4{
-    font-weight:400;
-    margin-bottom:0.3rem;
+.guild-info h4{ font-weight:600; font-size:.98rem; }
+.guild-info p{ font-size:.85rem; color:var(--muted); }
+.guild-info .invite-link{ font-size:.85rem; color:var(--accent); text-decoration:none; }
+.guild-info .invite-link:hover{ text-decoration:underline; }
+
+/* ===== ONGLETS ===== */
+.tabs{
+    display:flex;
+    gap:.2rem;
+    margin:1.5rem 0 2rem;
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{ display:none; }
+
+.tab{
+    background:none;
+    border:none;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    padding:.7rem 1rem;
+    font-family:inherit;
+    font-size:.95rem;
+    color:var(--muted);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:color .2s, border-color .2s;
 }
 
-.guild-info p{
-    font-size:0.8rem;
-    opacity:.65;
-}
+.tab:hover{ color:var(--ink); }
+.tab.active{ color:var(--ink); font-weight:600; border-bottom-color:var(--accent); }
+.tab:focus-visible{ outline-offset:-2px; }
 
-.guild-info .invite-link{
-    font-size:0.8rem;
-    color:#5d8890;
-    text-decoration:none;
-}
+.tab-pane[hidden]{ display:none; }
 
-/* ===== CONFIG GRID ===== */
+/* ===== CARTES DE RÉGLAGES ===== */
 .config-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(18rem, 1fr));
-    gap:1.5rem;
-    margin-top:1rem;
+    grid-template-columns:repeat(auto-fill, minmax(17rem, 1fr));
+    gap:1rem;
 }
 
-.cfg-card{
+.card.cfg-card,
+.card.embed-card{
     width:100%;
-    background:rgba(255,255,255,.35);
-    backdrop-filter:blur(8px);
-    border:1px solid rgba(0,0,0,.08);
-    padding:1.5rem;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1.4rem;
 }
 
-.cfg-card h3{
-    font-weight:400;
-    letter-spacing:1px;
-    margin-bottom:1.2rem;
-    opacity:.85;
-}
+.cfg-card h3,
+.embed-card-header h3{ font-weight:600; font-size:1rem; margin-bottom:1rem; }
+.embed-card-header h3{ margin-bottom:0; }
 
-.cfg-card label{
+.cfg-card label,
+.embed-fields label{
     display:block;
-    font-size:0.8rem;
-    opacity:.65;
-    margin-bottom:0.4rem;
-    margin-top:1rem;
+    font-size:.82rem;
+    color:var(--muted);
+    margin:1rem 0 .35rem;
 }
 
-.cfg-card label:first-of-type{
-    margin-top:0;
-}
+.cfg-card h3 + label,
+.embed-card-header + label,
+.embed-fields > label:first-child{ margin-top:0; }
 
+/* champs */
 .cfg-card select,
 .cfg-card input[type="number"],
-.cfg-card input[type="text"]{
+.cfg-card input[type="text"],
+.embed-fields select,
+.embed-fields input[type="text"],
+.embed-fields textarea,
+.embed-card .panel-name{
     width:100%;
-    padding:0.6rem 0.8rem;
-    background:rgba(255,255,255,.5);
-    border:1px solid rgba(0,0,0,.12);
-    color:inherit;
+    padding:.6rem .8rem;
+    background:var(--field);
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+    color:var(--ink);
     font-family:inherit;
-    font-size:0.9rem;
+    font-size:.92rem;
+    transition:border-color .2s;
 }
 
-/* ===== BAD WORDS CHIPS ===== */
-.chip-list{
-    display:flex;
-    flex-wrap:wrap;
-    gap:0.5rem;
-    margin-top:0.5rem;
-    min-height:1.5rem;
+.embed-fields textarea{ resize:vertical; line-height:1.5; }
+
+.cfg-card select:hover, .cfg-card input:hover,
+.embed-fields select:hover, .embed-fields input:hover, .embed-fields textarea:hover{ border-color:var(--muted); }
+
+.cfg-card input:focus, .cfg-card select:focus,
+.embed-fields input:focus, .embed-fields select:focus, .embed-fields textarea:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-.chip{
+.cfg-card input[type="number"]{ max-width:9rem; }
+
+.embed-fields input[type="color"]{
+    width:3.4rem;
+    height:2.2rem;
+    padding:2px;
+    background:var(--field);
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+    cursor:pointer;
+}
+
+.hint{ font-size:.75rem; opacity:.8; }
+.field-help{ font-size:.78rem; color:var(--muted); margin-top:.7rem; line-height:1.5; }
+.empty{ color:var(--muted); padding:1rem 0; }
+
+.notice{
+    max-width:40rem;
+    padding:1rem 1.2rem;
+    margin-bottom:1.5rem;
+    border:1px solid var(--danger);
+    border-radius:var(--radius-s);
+    color:var(--danger);
+}
+
+/* cases à cocher */
+label.check-row{
     display:flex;
     align-items:center;
-    gap:0.4rem;
-    background:rgba(0,0,0,.06);
-    border:1px solid rgba(0,0,0,.1);
-    padding:0.3rem 0.7rem;
-    font-size:0.8rem;
+    gap:.6rem;
+    margin:.7rem 0 0;
+    font-size:.88rem;
+    color:var(--ink);
+    cursor:pointer;
+}
+
+.cfg-card .check-row input,
+.check-list .check-row input{ width:auto; margin:0; accent-color:var(--accent); }
+
+.check-list{
+    max-height:14rem;
+    overflow-y:auto;
+    padding:.2rem .9rem .8rem;
+    background:var(--field);
+    border:1px solid var(--line);
+    border-radius:var(--radius-s);
+}
+.check-list .check-row{ margin-top:.55rem; }
+
+/* ===== CHIPS ===== */
+.chip-list{ display:flex; flex-wrap:wrap; gap:.4rem; min-height:1.6rem; margin-bottom:.2rem; }
+
+.chip{
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+    padding:.25rem .5rem .25rem .7rem;
+    font-size:.82rem;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:2rem;
 }
 
 .chip button{
     background:none;
     border:none;
-    color:inherit;
+    color:var(--muted);
     cursor:pointer;
-    opacity:.6;
-    font-size:0.9rem;
+    font-size:.8rem;
     line-height:1;
+    padding:.1rem .2rem;
 }
+.chip button:hover{ color:var(--danger); }
 
-.chip button:hover{
-    opacity:1;
-}
+.chip-input-row{ display:flex; gap:.5rem; margin-top:.5rem; }
+.chip-input-row input{ flex:1; min-width:0; }
+.cfg-card .chip-input-row + label,
+.cfg-card .chip-list + label{ margin-top:1.2rem; }
 
-.chip-input-row{
-    display:flex;
-    gap:0.5rem;
-    margin-top:0.6rem;
-}
-
-.chip-input-row input{
-    flex:1;
-}
-
-/* ===== SAVE ROW ===== */
+/* ===== BARRE D'ACTIONS ===== */
 .save-row{
     display:flex;
     align-items:center;
-    gap:1.2rem;
-    margin-top:2rem;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:.8rem;
+    margin-top:1.5rem;
 }
 
-.save-status{
-    font-size:0.85rem;
-    opacity:.75;
-}
+.save-row .save-status{ margin-right:auto; }
 
-.save-status.success{ color:#5d9b6b; opacity:1; }
-.save-status.error{ color:#c0605d; opacity:1; }
+.save-status{ font-size:.85rem; color:var(--muted); }
+.save-status.success{ color:var(--success); }
+.save-status.error{ color:var(--danger); }
 
-/* ===== DARK MODE ===== */
-body.dark-mode .guild-card,
-body.dark-mode .cfg-card{
-    background:rgba(0,0,0,.35);
-    border:1px solid rgba(255,255,255,.08);
-}
-
-body.dark-mode .guild-card:hover{
-    border-color:#8aa8af;
-}
-
-body.dark-mode .cfg-card select,
-body.dark-mode .cfg-card input{
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.12);
-}
-
-body.dark-mode .chip{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.12);
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width:600px){
-    .dash{ padding-top:2.5rem; }
-    .panel h1{ font-size:1.9rem; letter-spacing:3px; }
-    .guild-grid,
-    .config-grid{ grid-template-columns:1fr; }
-}
-
-/* ===== MESSAGES / EMBEDS ===== */
-.messages-tag{
-    margin-top:3rem;
-}
-
-.embed-editors{
-    display:flex;
-    flex-direction:column;
-    gap:2rem;
-    margin-top:1rem;
-}
-
-.embed-card{
-    width:100%;
-    padding:1.5rem;
-}
+/* ===== ÉDITEURS D'EMBEDS ===== */
+.embed-editors{ display:flex; flex-direction:column; gap:1.5rem; }
 
 .embed-card-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-bottom:1rem;
+    gap:1rem;
+    margin-bottom:1.2rem;
 }
 
-.embed-card-header h3{
-    font-weight:400;
-    letter-spacing:1px;
-}
+.cfg-card .embed-card-header{ margin-bottom:1rem; }
 
-.embed-editor-body{
-    display:grid;
-    grid-template-columns:1.2fr 1fr;
-    gap:2rem;
-}
+.embed-editor-body{ display:grid; grid-template-columns:1.2fr 1fr; gap:2rem; }
 
-.embed-fields label{
-    display:block;
-    font-size:0.8rem;
-    opacity:.65;
-    margin-bottom:0.4rem;
-    margin-top:1rem;
-}
-
-.embed-fields label:first-of-type{ margin-top:0; }
-
-.embed-fields .hint{
-    opacity:.6;
-    font-size:0.72rem;
-}
-
-.embed-fields select,
-.embed-fields input[type="text"],
-.embed-fields textarea{
-    width:100%;
-    padding:0.6rem 0.8rem;
-    background:rgba(255,255,255,.5);
-    border:1px solid rgba(0,0,0,.12);
-    color:inherit;
-    font-family:inherit;
-    font-size:0.9rem;
-    resize:vertical;
-}
-
-.embed-fields input[type="color"]{
-    width:4rem;
-    height:2.2rem;
-    padding:0;
-    border:1px solid rgba(0,0,0,.12);
-    background:none;
-    cursor:pointer;
-}
-
-/* ===== DISCORD-LIKE EMBED PREVIEW ===== */
+/* aperçu Discord : reste sombre quel que soit le thème, c'est le rendu réel */
 .embed-preview{
     background:#313338;
-    border-radius:6px;
-    padding:1.2rem;
+    border-radius:var(--radius);
+    padding:1.1rem;
     align-self:start;
 }
 
-.dc-embed{
-    display:flex;
-    background:#2b2d31;
-    border-radius:4px;
-    overflow:hidden;
-    max-width:26rem;
-}
+.dc-embed{ display:flex; background:#2b2d31; border-radius:4px; overflow:hidden; max-width:26rem; }
+.dc-embed-bar{ width:4px; flex-shrink:0; background:#5865f2; }
+.dc-embed-content{ padding:.8rem 1rem; flex:1; min-width:0; }
+.dc-embed-title{ color:#f2f3f5; font-weight:700; font-size:.95rem; margin-bottom:.3rem; word-break:break-word; }
+.dc-embed-desc{ color:#dbdee1; font-size:.85rem; line-height:1.4; white-space:pre-wrap; word-break:break-word; }
+.dc-embed-image{ display:block; max-width:100%; border-radius:4px; margin-top:.6rem; }
+.dc-embed-footer{ color:#949ba4; font-size:.75rem; margin-top:.6rem; }
+.dc-embed-thumb{ width:5rem; height:5rem; object-fit:cover; border-radius:4px; margin:.8rem 1rem 0 0; flex-shrink:0; }
 
-.dc-embed-bar{
-    width:4px;
-    flex-shrink:0;
-    background:#5865f2;
-}
-
-.dc-embed-content{
-    padding:0.8rem 1rem;
-    flex:1;
-    min-width:0;
-}
-
-.dc-embed-title{
-    color:#f2f3f5;
-    font-weight:700;
-    font-size:0.95rem;
-    margin-bottom:0.3rem;
-    word-break:break-word;
-}
-
-.dc-embed-desc{
-    color:#dbdee1;
-    font-size:0.85rem;
-    line-height:1.4;
-    white-space:pre-wrap;
-    word-break:break-word;
-}
-
-.dc-embed-image{
-    display:block;
-    max-width:100%;
-    border-radius:4px;
-    margin-top:0.6rem;
-}
-
-.dc-embed-footer{
-    color:#949ba4;
-    font-size:0.75rem;
-    margin-top:0.6rem;
-}
-
-.dc-embed-thumb{
-    width:5rem;
-    height:5rem;
-    object-fit:cover;
-    border-radius:4px;
-    margin:0.8rem 1rem 0 0;
-    flex-shrink:0;
-}
+.dc-buttons{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.8rem; }
+.dc-buttons:empty{ display:none; }
 
 .dc-fake-button{
-    margin-top:1rem;
-    background:#248046;
-    color:white;
+    color:#fff;
     border:none;
-    padding:0.6rem 1rem;
+    padding:.5rem 1rem;
     border-radius:3px;
-    font-size:0.85rem;
+    font-size:.85rem;
+    font-family:inherit;
     cursor:default;
 }
+.dc-fake-button.green{ background:#248046; }
+.dc-fake-button.blue{ background:#5865f2; }
+.dc-fake-button.grey{ background:#4e5058; }
 
-body.dark-mode .embed-fields select,
-body.dark-mode .embed-fields input[type="text"],
-body.dark-mode .embed-fields textarea{
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.12);
+/* ===== PANNEAUX DE RÔLES ===== */
+.panel-title{ display:flex; align-items:center; gap:.8rem; flex:1; min-width:0; }
+.embed-card .panel-name{ flex:1; min-width:0; max-width:22rem; font-size:1rem; font-weight:600; }
+
+.badge{
+    font-size:.75rem;
+    padding:.2rem .6rem;
+    border:1px solid var(--line);
+    border-radius:2rem;
+    color:var(--muted);
+    white-space:nowrap;
+}
+.badge.ok{ color:var(--success); border-color:var(--success); }
+
+.roles-box{ margin-top:1.5rem; }
+.roles-box h4{ font-weight:600; font-size:.85rem; margin-bottom:.6rem; }
+.roles-box > .btn{ margin-top:.8rem; }
+
+.role-row{ margin-bottom:.6rem; }
+.role-row-main{ display:grid; grid-template-columns:1fr 1fr auto; gap:.5rem; }
+.embed-fields .role-row select,
+.embed-fields .role-row input[type="text"]{ min-width:0; }
+.role-warn{ display:block; font-size:.78rem; color:var(--danger); margin-top:.3rem; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:900px){
+    .embed-editor-body{ grid-template-columns:1fr; }
 }
 
-@media (max-width:900px){
-    .embed-editor-body{
-        grid-template-columns:1fr;
-    }
+@media (max-width:600px){
+    .dash{ padding-top:2rem; }
+    .guild-grid, .config-grid{ grid-template-columns:1fr; }
+    .tab{ padding:.6rem .8rem; font-size:.88rem; }
+    .role-row-main{ grid-template-columns:1fr auto; }
+    .role-row-main select{ grid-column:1 / -1; }
+    .embed-card .panel-name{ max-width:none; }
+    .embed-card-header{ flex-wrap:wrap; }
+    .save-row .save-status{ flex-basis:100%; }
 }

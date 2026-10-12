@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SAKURA</title>
+<title>Sakura</title>
 
 <link rel="stylesheet" href="style.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -17,12 +18,12 @@
 <nav>
 
     <div class="logo">
-        SAKURA
+        Sakura
     </div>
 
     <div class="nav-links">
         <a href="index.html">Accueil</a>
-        <a href="#">Fonctions</a>
+        <a href="index.html#fonctions">Fonctions</a>
         <a href="dashboard.html">Dashboard</a>
         <a href="https://discord.gg/kDBUF2JGNp">Support</a>
     </div>
@@ -59,60 +60,68 @@
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
+<main>
 <section class="hero">
 
-    <div class="line"></div>
-
-    <div class="tag">
-        DISCORD ASSISTANT SYSTEM
-    </div>
-
-    <h1>SAKURA</h1>
+    <h1 class="wordmark">Sakura</h1>
 
     <p class="description">
-        Un assistant Discord conçu pour automatiser,
-        modérer et améliorer l'expérience de votre communauté.
-        Rapide, moderne et constamment mis à jour.
+        Un assistant Discord qui modère, accueille et organise votre serveur.
+        Chaque réglage se fait depuis le dashboard, serveur par serveur.
     </p>
 
     <div class="buttons">
-
-        <a href="https://discord.com/oauth2/authorize?client_id=1460310869320663040" class="btn">
-            INVITER
-        </a>
-
-        <a href="https://discord.gg/kDBUF2JGNp" class="btn">
-            SUPPORT
-        </a>
-
+        <a href="https://discord.com/oauth2/authorize?client_id=1460310869320663040" class="btn">Inviter le bot</a>
+        <a href="dashboard.html" class="btn secondary">Ouvrir le dashboard</a>
     </div>
 
     <div class="stats">
-
         <div class="card">
-            <h2>125+</h2>
+            <h2 id="statServers">…</h2>
             <p>Serveurs</p>
         </div>
-
         <div class="card">
-            <h2>18K</h2>
-            <p>Utilisateurs</p>
+            <h2 id="statMembers">…</h2>
+            <p>Membres</p>
         </div>
-
         <div class="card">
-            <h2>99%</h2>
-            <p>Disponibilité</p>
+            <h2 id="statUptime">…</h2>
+            <p>En ligne depuis</p>
         </div>
-
     </div>
 
 </section>
 
+<section class="features" id="fonctions">
+    <h2>Ce que fait Sakura</h2>
+    <div class="feature-list">
+        <div>
+            <h3>Automod</h3>
+            <p>Spam, invitations, liens, majuscules, mentions et mots interdits, avec sanction au choix.</p>
+        </div>
+        <div>
+            <h3>Tickets</h3>
+            <p>Un bouton ouvre un salon privé avec le staff, avec un message d'accueil que tu écris toi-même.</p>
+        </div>
+        <div>
+            <h3>Rôles à boutons</h3>
+            <p>Des panneaux où chacun choisit ses rôles d'un clic. Les rôles sensibles sont refusés.</p>
+        </div>
+        <div>
+            <h3>Règlement et bienvenue</h3>
+            <p>Des embeds personnalisables, un bouton « J'accepte » qui donne le rôle de vérification.</p>
+        </div>
+    </div>
+</section>
+</main>
+
 <footer>
-    SAKURA — SYSTEM INTERFACE v1.0
+    Sakura
 </footer>
 
+<script src="site-config.js"></script>
 <script src="script.js"></script>
+<script src="stats.js"></script>
 
 </body>
 </html>

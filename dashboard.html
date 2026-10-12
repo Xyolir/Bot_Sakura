@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dashboard — Projet P.0</title>
+<title>Dashboard — Sakura</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="dashboard.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -18,12 +19,12 @@
 <nav>
 
     <a href="index.html" class="logo" style="text-decoration:none;color:inherit;">
-        PROJET P.0
+        Sakura
     </a>
 
     <div class="nav-links">
         <a href="index.html">Accueil</a>
-        <a href="index.html">Fonctions</a>
+        <a href="index.html#fonctions">Fonctions</a>
         <a href="dashboard.html">Dashboard</a>
         <a href="https://discord.gg/kDBUF2JGNp">Support</a>
     </div>
@@ -64,15 +65,16 @@
 
     <!-- Écran : pas connecté -->
     <div id="authGate" class="panel" hidden>
-        <div class="tag">CONNEXION REQUISE</div>
+        <div class="tag">Connexion requise</div>
         <h1>Accède à ton dashboard</h1>
         <p class="description">Connecte-toi avec Discord pour gérer les serveurs sur lesquels tu es admin.</p>
-        <a id="loginBtn" class="btn" href="#">SE CONNECTER AVEC DISCORD</a>
+        <a id="loginBtn" class="btn" href="#">Se connecter avec Discord</a>
+        <p id="authError" class="save-status error" hidden>✕ API injoignable : vérifie que le bot est démarré (node index.js), puis recharge la page.</p>
     </div>
 
     <!-- Écran : liste des serveurs -->
     <div id="guildListView" class="panel" hidden>
-        <div class="tag">TES SERVEURS</div>
+        <div class="tag">Tes serveurs</div>
         <h1>Dashboard</h1>
         <p class="description">Sélectionne un serveur où tu es administrateur pour le configurer.</p>
         <div id="guildGrid" class="guild-grid"></div>
@@ -82,178 +84,194 @@
     <!-- Écran : configuration d'un serveur -->
     <div id="guildConfigView" class="panel" hidden>
         <button id="backBtn" class="btn btn-small back-btn">← Retour</button>
-        <div class="tag" id="cfgGuildTag">SERVEUR</div>
+        <div class="tag" id="cfgGuildTag">Serveur</div>
         <h1 id="cfgGuildName">—</h1>
 
-        <div class="config-grid">
-
-            <div class="card cfg-card">
-                <h3>Règlement / Vérification</h3>
-                <label>Rôle donné après validation</label>
-                <select id="verifiedRoleId"></select>
-            </div>
-
-            <div class="card cfg-card">
-                <h3>Modération</h3>
-                <label>Rôle staff (exempté d'automod, voit les tickets)</label>
-                <select id="staffRoleId"></select>
-                <label>Salon des logs</label>
-                <select id="logChannelId"></select>
-            </div>
-
-            <div class="card cfg-card">
-                <h3>Tickets</h3>
-                <label>Catégorie de création</label>
-                <select id="ticketCategoryId"></select>
-            </div>
-
-            <div class="card cfg-card">
-                <h3>Automod</h3>
-                <label>Messages max avant timeout</label>
-                <input type="number" id="spamLimit" min="1" max="30">
-                <label>Fenêtre de temps (secondes)</label>
-                <input type="number" id="spamWindowSec" min="1" max="60">
-                <label>Mots filtrés</label>
-                <div id="badWordsList" class="chip-list"></div>
-                <div class="chip-input-row">
-                    <input type="text" id="badWordInput" placeholder="Ajouter un mot...">
-                    <button id="addBadWordBtn" class="btn btn-small">Ajouter</button>
-                </div>
-            </div>
-
+        <div class="tabs" role="tablist" id="tabBar">
+            <button class="tab active" role="tab" data-tab="general">Général</button>
+            <button class="tab" role="tab" data-tab="messages">Messages</button>
+            <button class="tab" role="tab" data-tab="tickets">Tickets</button>
+            <button class="tab" role="tab" data-tab="roles">Rôles</button>
+            <button class="tab" role="tab" data-tab="automod">Automod</button>
         </div>
 
-        <div class="save-row">
-            <span id="saveStatus" class="save-status"></span>
-            <button id="saveBtn" class="btn">ENREGISTRER</button>
+        <!-- ===== GÉNÉRAL ===== -->
+        <div class="tab-pane" id="tab-general">
+            <div class="config-grid">
+                <div class="card cfg-card">
+                    <h3>Règlement / Vérification</h3>
+                    <label for="verifiedRoleId">Rôle donné après validation</label>
+                    <select id="verifiedRoleId"></select>
+                    <p class="field-help">Seuls les rôles sans permission sensible et sous le rôle du bot sont proposés.</p>
+                </div>
+
+                <div class="card cfg-card">
+                    <h3>Modération</h3>
+                    <label for="staffRoleId">Rôle staff (exempté d'automod, voit les tickets)</label>
+                    <select id="staffRoleId"></select>
+                    <label for="logChannelId">Salon des logs</label>
+                    <select id="logChannelId"></select>
+                </div>
+
+                <div class="card cfg-card">
+                    <h3>Tickets</h3>
+                    <label for="ticketCategoryId">Catégorie de création</label>
+                    <select id="ticketCategoryId"></select>
+                </div>
+            </div>
+
+            <div class="save-row">
+                <span id="saveStatus" class="save-status"></span>
+                <button id="saveBtn" class="btn">Enregistrer</button>
+            </div>
         </div>
 
-        <div class="tag messages-tag">MESSAGES & EMBEDS</div>
-        <p class="description">Personnalise le message de bienvenue et le règlement. La prévisualisation à droite reflète (à peu près) le rendu Discord.</p>
+        <!-- ===== MESSAGES ===== -->
+        <div class="tab-pane" id="tab-messages" hidden>
+            <p class="description">Personnalise le message de bienvenue et le règlement. La prévisualisation reflète (à peu près) le rendu Discord.</p>
+            <div class="embed-editors" id="editors-messages"></div>
+        </div>
 
-        <div class="embed-editors">
+        <!-- ===== TICKETS ===== -->
+        <div class="tab-pane" id="tab-tickets" hidden>
+            <p class="description">Le panneau est le message avec le bouton « Ouvrir un ticket ». Le second message est celui que le membre voit dans son ticket. Pense à choisir la catégorie et le rôle staff dans l'onglet Général.</p>
+            <div class="embed-editors" id="editors-tickets"></div>
+        </div>
 
-            <!-- ===== BIENVENUE ===== -->
-            <div class="card embed-card">
-                <div class="embed-card-header">
-                    <h3>👋 Message de bienvenue</h3>
-                    <label class="switch">
-                        <input type="checkbox" id="welcomeEnabled">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <div class="embed-editor-body">
-                    <div class="embed-fields">
-                        <label>Salon</label>
-                        <select id="welcomeChannelId"></select>
-
-                        <label>Titre</label>
-                        <input type="text" id="welcomeTitle" maxlength="256">
-
-                        <label>Description <span class="hint">— variables : {user} {server} {memberCount}</span></label>
-                        <textarea id="welcomeDescription" maxlength="4096" rows="4"></textarea>
-
-                        <label>Couleur</label>
-                        <input type="color" id="welcomeColor">
-
-                        <label>Image (URL, bandeau)</label>
-                        <input type="text" id="welcomeImageUrl" placeholder="https://...">
-
-                        <label>Vignette (URL, petite image)</label>
-                        <input type="text" id="welcomeThumbnailUrl" placeholder="https://...">
-
-                        <label>Footer</label>
-                        <input type="text" id="welcomeFooter" maxlength="2048">
-                    </div>
-
-                    <div class="embed-preview" id="welcomePreview">
-                        <div class="dc-embed">
-                            <div class="dc-embed-bar" id="welcomePreviewBar"></div>
-                            <div class="dc-embed-content">
-                                <div class="dc-embed-title" id="welcomePreviewTitle"></div>
-                                <div class="dc-embed-desc" id="welcomePreviewDesc"></div>
-                                <img class="dc-embed-image" id="welcomePreviewImage" hidden>
-                                <div class="dc-embed-footer" id="welcomePreviewFooter"></div>
-                            </div>
-                            <img class="dc-embed-thumb" id="welcomePreviewThumb" hidden>
-                        </div>
-                    </div>
-                </div>
-
+        <!-- ===== RÔLES ===== -->
+        <div class="tab-pane" id="tab-roles" hidden>
+            <p class="description">Crée des panneaux de boutons : un clic ajoute ou retire le rôle. Les rôles à permissions sensibles (admin, modération…) sont refusés.</p>
+            <p id="rolesNoPerm" class="notice" hidden>🔒 Il te faut la permission « Gérer les rôles » sur ce serveur pour modifier les panneaux de rôles.</p>
+            <div id="rolesBody">
+                <div id="panelList" class="embed-editors"></div>
                 <div class="save-row">
-                    <span id="welcomeStatus" class="save-status"></span>
-                    <button id="welcomePublishBtn" class="btn btn-small">PUBLIER MAINTENANT</button>
-                    <button id="welcomeSaveBtn" class="btn">ENREGISTRER</button>
+                    <span id="rolesStatus" class="save-status"></span>
+                    <button id="addPanelBtn" class="btn btn-small">+ Nouveau panneau</button>
+                    <button id="saveRolesBtn" class="btn">Enregistrer tout</button>
                 </div>
             </div>
+        </div>
 
-            <!-- ===== RÈGLEMENT ===== -->
-            <div class="card embed-card">
-                <div class="embed-card-header">
-                    <h3>📜 Règlement</h3>
-                </div>
+        <!-- ===== AUTOMOD ===== -->
+        <div class="tab-pane" id="tab-automod" hidden>
+            <p class="description">Les membres avec « Gérer les messages » et le rôle staff ne sont jamais sanctionnés.</p>
+            <div class="config-grid" id="automodGrid">
 
-                <div class="embed-editor-body">
-                    <div class="embed-fields">
-                        <label>Salon</label>
-                        <select id="reglementChannelId"></select>
-
-                        <label>Titre</label>
-                        <input type="text" id="reglementTitle" maxlength="256">
-
-                        <label>Description</label>
-                        <textarea id="reglementDescription" maxlength="4096" rows="4"></textarea>
-
-                        <label>Couleur</label>
-                        <input type="color" id="reglementColor">
-
-                        <label>Image (URL, bandeau)</label>
-                        <input type="text" id="reglementImageUrl" placeholder="https://...">
-
-                        <label>Vignette (URL, petite image)</label>
-                        <input type="text" id="reglementThumbnailUrl" placeholder="https://...">
-
-                        <label>Footer</label>
-                        <input type="text" id="reglementFooter" maxlength="2048">
-
-                        <label>Texte du bouton</label>
-                        <input type="text" id="reglementButtonLabel" maxlength="80">
+                <div class="card cfg-card">
+                    <div class="embed-card-header">
+                        <h3>Automod</h3>
+                        <label class="switch"><input type="checkbox" id="am_enabled"><span class="slider"></span></label>
                     </div>
+                    <label for="am_action">Sanction</label>
+                    <select id="am_action">
+                        <option value="delete">Supprimer le message</option>
+                        <option value="timeout">Supprimer + timeout</option>
+                    </select>
+                    <label for="am_timeoutMinutes">Durée du timeout (minutes)</label>
+                    <input type="number" id="am_timeoutMinutes" min="1" max="40320">
+                    <label class="check-row"><input type="checkbox" id="am_notifyUser"> Prévenir le membre dans le salon</label>
+                </div>
 
-                    <div class="embed-preview">
-                        <div class="dc-embed">
-                            <div class="dc-embed-bar" id="reglementPreviewBar"></div>
-                            <div class="dc-embed-content">
-                                <div class="dc-embed-title" id="reglementPreviewTitle"></div>
-                                <div class="dc-embed-desc" id="reglementPreviewDesc"></div>
-                                <img class="dc-embed-image" id="reglementPreviewImage" hidden>
-                                <div class="dc-embed-footer" id="reglementPreviewFooter"></div>
-                            </div>
-                            <img class="dc-embed-thumb" id="reglementPreviewThumb" hidden>
-                        </div>
-                        <button class="dc-fake-button" id="reglementPreviewBtn">✅ J'accepte</button>
+                <div class="card cfg-card">
+                    <div class="embed-card-header">
+                        <h3>Anti-spam</h3>
+                        <label class="switch"><input type="checkbox" id="am_antiSpam"><span class="slider"></span></label>
+                    </div>
+                    <label for="am_spamLimit">Messages max…</label>
+                    <input type="number" id="am_spamLimit" min="2" max="20">
+                    <label for="am_spamWindowSec">…sur cette durée (secondes)</label>
+                    <input type="number" id="am_spamWindowSec" min="1" max="60">
+                    <p class="field-help">Le spam déclenche toujours un timeout.</p>
+                </div>
+
+                <div class="card cfg-card">
+                    <div class="embed-card-header">
+                        <h3>Invitations Discord</h3>
+                        <label class="switch"><input type="checkbox" id="am_antiInvite"><span class="slider"></span></label>
+                    </div>
+                    <p class="field-help">Supprime les liens discord.gg / discord.com/invite.</p>
+                </div>
+
+                <div class="card cfg-card">
+                    <div class="embed-card-header">
+                        <h3>Liens</h3>
+                        <label class="switch"><input type="checkbox" id="am_antiLinks"><span class="slider"></span></label>
+                    </div>
+                    <label for="am_linkInput">Domaines autorisés</label>
+                    <div id="am_linkWhitelist" class="chip-list"></div>
+                    <div class="chip-input-row">
+                        <input type="text" id="am_linkInput" placeholder="youtube.com">
+                        <button id="am_linkAdd" class="btn btn-small">Ajouter</button>
                     </div>
                 </div>
 
-                <div class="save-row">
-                    <span id="reglementStatus" class="save-status"></span>
-                    <button id="reglementPublishBtn" class="btn btn-small">PUBLIER MAINTENANT</button>
-                    <button id="reglementSaveBtn" class="btn">ENREGISTRER</button>
+                <div class="card cfg-card">
+                    <div class="embed-card-header">
+                        <h3>Majuscules</h3>
+                        <label class="switch"><input type="checkbox" id="am_antiCaps"><span class="slider"></span></label>
+                    </div>
+                    <label for="am_capsMinLength">À partir de … lettres</label>
+                    <input type="number" id="am_capsMinLength" min="5" max="200">
+                    <label for="am_capsMaxPercent">% de majuscules maximum</label>
+                    <input type="number" id="am_capsMaxPercent" min="30" max="100">
                 </div>
+
+                <div class="card cfg-card">
+                    <div class="embed-card-header">
+                        <h3>Mentions</h3>
+                        <label class="switch"><input type="checkbox" id="am_antiMentions"><span class="slider"></span></label>
+                    </div>
+                    <label for="am_maxMentions">Mentions max par message</label>
+                    <input type="number" id="am_maxMentions" min="1" max="50">
+                </div>
+
+                <div class="card cfg-card">
+                    <h3>Mots filtrés</h3>
+                    <div id="am_badWords" class="chip-list"></div>
+                    <div class="chip-input-row">
+                        <input type="text" id="am_wordInput" placeholder="Ajouter un mot...">
+                        <button id="am_wordAdd" class="btn btn-small">Ajouter</button>
+                    </div>
+                    <label for="am_badWordsMode">Détection</label>
+                    <select id="am_badWordsMode" aria-describedby="am_modeHelp">
+                        <option value="word">Mot entier</option>
+                        <option value="contains">Dans un mot</option>
+                    </select>
+                    <p class="field-help" id="am_modeHelp">« Mot entier » : « pub » ne bloque pas « public ». « Dans un mot » bloque aussi « public ».</p>
+                </div>
+
+                <div class="card cfg-card">
+                    <h3>Rôles exemptés</h3>
+                    <div id="am_exemptRoles" class="check-list"></div>
+                </div>
+
+                <div class="card cfg-card">
+                    <h3>Salons exemptés</h3>
+                    <div id="am_exemptChannels" class="check-list"></div>
+                </div>
+
             </div>
 
+            <div class="save-row">
+                <span id="automodStatus" class="save-status"></span>
+                <button id="saveAutomodBtn" class="btn">Enregistrer</button>
+            </div>
         </div>
     </div>
 
 </section>
 
 <footer>
-    PROJET P.0 — SYSTEM INTERFACE v1.0
+    Sakura
 </footer>
 
+<script src="site-config.js"></script>
 <script src="script.js"></script>
 <script src="dashboard.js"></script>
+<script src="dashboard-embeds.js"></script>
+<script src="dashboard-roles.js"></script>
+<script src="dashboard-automod.js"></script>
+<script>window.addEventListener("load", () => window.P0Dashboard.boot());</script>
 
 </body>
 </html>
