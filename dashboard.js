@@ -60,19 +60,43 @@
   P0.warningText = (list) => (list || []).map((w) => WARNING_TEXT[w]).filter(Boolean).join(" · ");
   P0.roleReason = (reason) => ROLE_REASONS[reason] || "ce rôle ne peut pas être attribué";
 
+  // ---------- Connexion : jeton de session (pas de cookie, donc compatible github.io + API sur une autre adresse) ----------
+  const TOKEN_KEY = "sakura_token";
+  const NONCE_KEY = "sakura_nonce";
+
+  function getToken() { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } }
+  function clearToken() { try { localStorage.removeItem(TOKEN_KEY); } catch { /* stockage indisponible */ } }
+
+  const randomNonce = () => [...crypto.getRandomValues(new Uint8Array(24))].map((b) => b.toString(16).padStart(2, "0")).join("");
+
+  // Au retour de Discord, l'API renvoie  dashboard.html#token=…&nonce=…  : on n'accepte le jeton que si le nonce
+  // est celui généré par CE navigateur au moment du clic.
+  function consumeLoginFragment() {
+    if (!location.hash.includes("token=")) return;
+    const params = new URLSearchParams(location.hash.slice(1));
+    history.replaceState(null, "", location.pathname + location.search); // le jeton ne reste pas dans l'URL
+    try {
+      const expected = sessionStorage.getItem(NONCE_KEY);
+      sessionStorage.removeItem(NONCE_KEY);
+      if (expected && params.get("nonce") === expected && params.get("token")) {
+        localStorage.setItem(TOKEN_KEY, params.get("token"));
+      }
+    } catch { /* stockage indisponible */ }
+  }
+
   // ---------- API ----------
   P0.api = async function (path, options = {}) {
     let res;
     try {
       res = await fetch(`${API_BASE}${path}`, {
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
         ...options,
+        headers: { "Content-Type": "application/json", ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}) },
       });
     } catch {
       throw Object.assign(new Error("network"), { code: "network" });
     }
     if (res.status === 401) {
+      clearToken();
       showView("auth");
       throw Object.assign(new Error("not_authenticated"), { code: "not_authenticated" });
     }
@@ -171,6 +195,7 @@
     } catch {
       // API injoignable ou session déjà expirée : on recharge quand même
     }
+    clearToken();
     location.reload();
   });
 
@@ -272,7 +297,13 @@
 
   // ---------- Démarrage (appelé sur l'événement load) ----------
   P0.boot = async function () {
-    $("loginBtn").href = `${API_BASE}/api/auth/login`;
+    consumeLoginFragment();
+    $("loginBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      const nonce = randomNonce();
+      try { sessionStorage.setItem(NONCE_KEY, nonce); } catch { /* stockage indisponible */ }
+      location.href = `${API_BASE}/api/auth/login?nonce=${nonce}`;
+    });
     try {
       const me = await P0.api("/api/auth/me");
       $("userBadge").hidden = false;
