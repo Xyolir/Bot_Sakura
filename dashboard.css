@@ -1,0 +1,406 @@
+/* ===== DASHBOARD ===== */
+
+.dash{
+    width:min(1200px,90%);
+    margin:auto;
+    padding-top:4rem;
+    position:relative;
+    z-index:2;
+}
+
+.panel h1{
+    font-size:2.6rem;
+    font-weight:300;
+    letter-spacing:4px;
+    margin-bottom:0.8rem;
+}
+
+.panel .description{
+    width:34rem;
+    max-width:100%;
+    line-height:1.8;
+    opacity:.8;
+    margin-bottom:2rem;
+}
+
+/* ===== USER BADGE (nav) ===== */
+.user-badge{
+    display:flex;
+    align-items:center;
+    gap:0.8rem;
+}
+
+.avatar{
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,.1);
+}
+
+.btn-small{
+    padding:0.5rem 1rem;
+    font-size:0.8rem;
+}
+
+.back-btn{
+    margin-bottom:2rem;
+    display:inline-block;
+}
+
+/* ===== GUILD GRID ===== */
+.guild-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(16rem, 1fr));
+    gap:1.5rem;
+}
+
+.guild-card{
+    width:100%;
+    background:rgba(255,255,255,.35);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(0,0,0,.08);
+    padding:1.5rem;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.guild-card:hover{
+    border-color:#9bbdc0;
+    transform:translateY(-2px);
+}
+
+.guild-card.disabled{
+    cursor:default;
+    opacity:.55;
+}
+
+.guild-card.disabled:hover{
+    transform:none;
+    border-color:rgba(0,0,0,.08);
+}
+
+.guild-icon{
+    width:3rem;
+    height:3rem;
+    border-radius:50%;
+    background:#bfc8ca;
+    flex-shrink:0;
+    object-fit:cover;
+}
+
+.guild-info h4{
+    font-weight:400;
+    margin-bottom:0.3rem;
+}
+
+.guild-info p{
+    font-size:0.8rem;
+    opacity:.65;
+}
+
+.guild-info .invite-link{
+    font-size:0.8rem;
+    color:#5d8890;
+    text-decoration:none;
+}
+
+/* ===== CONFIG GRID ===== */
+.config-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(18rem, 1fr));
+    gap:1.5rem;
+    margin-top:1rem;
+}
+
+.cfg-card{
+    width:100%;
+    background:rgba(255,255,255,.35);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(0,0,0,.08);
+    padding:1.5rem;
+}
+
+.cfg-card h3{
+    font-weight:400;
+    letter-spacing:1px;
+    margin-bottom:1.2rem;
+    opacity:.85;
+}
+
+.cfg-card label{
+    display:block;
+    font-size:0.8rem;
+    opacity:.65;
+    margin-bottom:0.4rem;
+    margin-top:1rem;
+}
+
+.cfg-card label:first-of-type{
+    margin-top:0;
+}
+
+.cfg-card select,
+.cfg-card input[type="number"],
+.cfg-card input[type="text"]{
+    width:100%;
+    padding:0.6rem 0.8rem;
+    background:rgba(255,255,255,.5);
+    border:1px solid rgba(0,0,0,.12);
+    color:inherit;
+    font-family:inherit;
+    font-size:0.9rem;
+}
+
+/* ===== BAD WORDS CHIPS ===== */
+.chip-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem;
+    margin-top:0.5rem;
+    min-height:1.5rem;
+}
+
+.chip{
+    display:flex;
+    align-items:center;
+    gap:0.4rem;
+    background:rgba(0,0,0,.06);
+    border:1px solid rgba(0,0,0,.1);
+    padding:0.3rem 0.7rem;
+    font-size:0.8rem;
+}
+
+.chip button{
+    background:none;
+    border:none;
+    color:inherit;
+    cursor:pointer;
+    opacity:.6;
+    font-size:0.9rem;
+    line-height:1;
+}
+
+.chip button:hover{
+    opacity:1;
+}
+
+.chip-input-row{
+    display:flex;
+    gap:0.5rem;
+    margin-top:0.6rem;
+}
+
+.chip-input-row input{
+    flex:1;
+}
+
+/* ===== SAVE ROW ===== */
+.save-row{
+    display:flex;
+    align-items:center;
+    gap:1.2rem;
+    margin-top:2rem;
+}
+
+.save-status{
+    font-size:0.85rem;
+    opacity:.75;
+}
+
+.save-status.success{ color:#5d9b6b; opacity:1; }
+.save-status.error{ color:#c0605d; opacity:1; }
+
+/* ===== DARK MODE ===== */
+body.dark-mode .guild-card,
+body.dark-mode .cfg-card{
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+body.dark-mode .guild-card:hover{
+    border-color:#8aa8af;
+}
+
+body.dark-mode .cfg-card select,
+body.dark-mode .cfg-card input{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+body.dark-mode .chip{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:600px){
+    .dash{ padding-top:2.5rem; }
+    .panel h1{ font-size:1.9rem; letter-spacing:3px; }
+    .guild-grid,
+    .config-grid{ grid-template-columns:1fr; }
+}
+
+/* ===== MESSAGES / EMBEDS ===== */
+.messages-tag{
+    margin-top:3rem;
+}
+
+.embed-editors{
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+    margin-top:1rem;
+}
+
+.embed-card{
+    width:100%;
+    padding:1.5rem;
+}
+
+.embed-card-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:1rem;
+}
+
+.embed-card-header h3{
+    font-weight:400;
+    letter-spacing:1px;
+}
+
+.embed-editor-body{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:2rem;
+}
+
+.embed-fields label{
+    display:block;
+    font-size:0.8rem;
+    opacity:.65;
+    margin-bottom:0.4rem;
+    margin-top:1rem;
+}
+
+.embed-fields label:first-of-type{ margin-top:0; }
+
+.embed-fields .hint{
+    opacity:.6;
+    font-size:0.72rem;
+}
+
+.embed-fields select,
+.embed-fields input[type="text"],
+.embed-fields textarea{
+    width:100%;
+    padding:0.6rem 0.8rem;
+    background:rgba(255,255,255,.5);
+    border:1px solid rgba(0,0,0,.12);
+    color:inherit;
+    font-family:inherit;
+    font-size:0.9rem;
+    resize:vertical;
+}
+
+.embed-fields input[type="color"]{
+    width:4rem;
+    height:2.2rem;
+    padding:0;
+    border:1px solid rgba(0,0,0,.12);
+    background:none;
+    cursor:pointer;
+}
+
+/* ===== DISCORD-LIKE EMBED PREVIEW ===== */
+.embed-preview{
+    background:#313338;
+    border-radius:6px;
+    padding:1.2rem;
+    align-self:start;
+}
+
+.dc-embed{
+    display:flex;
+    background:#2b2d31;
+    border-radius:4px;
+    overflow:hidden;
+    max-width:26rem;
+}
+
+.dc-embed-bar{
+    width:4px;
+    flex-shrink:0;
+    background:#5865f2;
+}
+
+.dc-embed-content{
+    padding:0.8rem 1rem;
+    flex:1;
+    min-width:0;
+}
+
+.dc-embed-title{
+    color:#f2f3f5;
+    font-weight:700;
+    font-size:0.95rem;
+    margin-bottom:0.3rem;
+    word-break:break-word;
+}
+
+.dc-embed-desc{
+    color:#dbdee1;
+    font-size:0.85rem;
+    line-height:1.4;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.dc-embed-image{
+    display:block;
+    max-width:100%;
+    border-radius:4px;
+    margin-top:0.6rem;
+}
+
+.dc-embed-footer{
+    color:#949ba4;
+    font-size:0.75rem;
+    margin-top:0.6rem;
+}
+
+.dc-embed-thumb{
+    width:5rem;
+    height:5rem;
+    object-fit:cover;
+    border-radius:4px;
+    margin:0.8rem 1rem 0 0;
+    flex-shrink:0;
+}
+
+.dc-fake-button{
+    margin-top:1rem;
+    background:#248046;
+    color:white;
+    border:none;
+    padding:0.6rem 1rem;
+    border-radius:3px;
+    font-size:0.85rem;
+    cursor:default;
+}
+
+body.dark-mode .embed-fields select,
+body.dark-mode .embed-fields input[type="text"],
+body.dark-mode .embed-fields textarea{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+@media (max-width:900px){
+    .embed-editor-body{
+        grid-template-columns:1fr;
+    }
+}

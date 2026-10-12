@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard — Projet P.0</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="dashboard.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+</head>
+<body>
+
+<nav>
+
+    <a href="index.html" class="logo" style="text-decoration:none;color:inherit;">
+        PROJET P.0
+    </a>
+
+    <div class="nav-links">
+        <a href="index.html">Accueil</a>
+        <a href="index.html">Fonctions</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="https://discord.gg/kDBUF2JGNp">Support</a>
+    </div>
+
+    <div class="settings">
+
+        <div class="switch-container">
+            <span>Thème</span>
+            <label class="switch">
+                <input type="checkbox" id="themeSwitch">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="switch-container">
+            <span>Son</span>
+            <label class="switch">
+                <input type="checkbox" id="musicSwitch">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div id="userBadge" class="user-badge" hidden>
+            <img id="userAvatar" class="avatar" alt="">
+            <span id="userName"></span>
+            <button id="logoutBtn" class="btn btn-small">Déconnexion</button>
+        </div>
+
+    </div>
+
+</nav>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<section class="dash">
+
+    <!-- Écran : pas connecté -->
+    <div id="authGate" class="panel" hidden>
+        <div class="tag">CONNEXION REQUISE</div>
+        <h1>Accède à ton dashboard</h1>
+        <p class="description">Connecte-toi avec Discord pour gérer les serveurs sur lesquels tu es admin.</p>
+        <a id="loginBtn" class="btn" href="#">SE CONNECTER AVEC DISCORD</a>
+    </div>
+
+    <!-- Écran : liste des serveurs -->
+    <div id="guildListView" class="panel" hidden>
+        <div class="tag">TES SERVEURS</div>
+        <h1>Dashboard</h1>
+        <p class="description">Sélectionne un serveur où tu es administrateur pour le configurer.</p>
+        <div id="guildGrid" class="guild-grid"></div>
+        <p id="listError" class="save-status error" hidden></p>
+    </div>
+
+    <!-- Écran : configuration d'un serveur -->
+    <div id="guildConfigView" class="panel" hidden>
+        <button id="backBtn" class="btn btn-small back-btn">← Retour</button>
+        <div class="tag" id="cfgGuildTag">SERVEUR</div>
+        <h1 id="cfgGuildName">—</h1>
+
+        <div class="config-grid">
+
+            <div class="card cfg-card">
+                <h3>Règlement / Vérification</h3>
+                <label>Rôle donné après validation</label>
+                <select id="verifiedRoleId"></select>
+            </div>
+
+            <div class="card cfg-card">
+                <h3>Modération</h3>
+                <label>Rôle staff (exempté d'automod, voit les tickets)</label>
+                <select id="staffRoleId"></select>
+                <label>Salon des logs</label>
+                <select id="logChannelId"></select>
+            </div>
+
+            <div class="card cfg-card">
+                <h3>Tickets</h3>
+                <label>Catégorie de création</label>
+                <select id="ticketCategoryId"></select>
+            </div>
+
+            <div class="card cfg-card">
+                <h3>Automod</h3>
+                <label>Messages max avant timeout</label>
+                <input type="number" id="spamLimit" min="1" max="30">
+                <label>Fenêtre de temps (secondes)</label>
+                <input type="number" id="spamWindowSec" min="1" max="60">
+                <label>Mots filtrés</label>
+                <div id="badWordsList" class="chip-list"></div>
+                <div class="chip-input-row">
+                    <input type="text" id="badWordInput" placeholder="Ajouter un mot...">
+                    <button id="addBadWordBtn" class="btn btn-small">Ajouter</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="save-row">
+            <span id="saveStatus" class="save-status"></span>
+            <button id="saveBtn" class="btn">ENREGISTRER</button>
+        </div>
+
+        <div class="tag messages-tag">MESSAGES & EMBEDS</div>
+        <p class="description">Personnalise le message de bienvenue et le règlement. La prévisualisation à droite reflète (à peu près) le rendu Discord.</p>
+
+        <div class="embed-editors">
+
+            <!-- ===== BIENVENUE ===== -->
+            <div class="card embed-card">
+                <div class="embed-card-header">
+                    <h3>👋 Message de bienvenue</h3>
+                    <label class="switch">
+                        <input type="checkbox" id="welcomeEnabled">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="embed-editor-body">
+                    <div class="embed-fields">
+                        <label>Salon</label>
+                        <select id="welcomeChannelId"></select>
+
+                        <label>Titre</label>
+                        <input type="text" id="welcomeTitle" maxlength="256">
+
+                        <label>Description <span class="hint">— variables : {user} {server} {memberCount}</span></label>
+                        <textarea id="welcomeDescription" maxlength="4096" rows="4"></textarea>
+
+                        <label>Couleur</label>
+                        <input type="color" id="welcomeColor">
+
+                        <label>Image (URL, bandeau)</label>
+                        <input type="text" id="welcomeImageUrl" placeholder="https://...">
+
+                        <label>Vignette (URL, petite image)</label>
+                        <input type="text" id="welcomeThumbnailUrl" placeholder="https://...">
+
+                        <label>Footer</label>
+                        <input type="text" id="welcomeFooter" maxlength="2048">
+                    </div>
+
+                    <div class="embed-preview" id="welcomePreview">
+                        <div class="dc-embed">
+                            <div class="dc-embed-bar" id="welcomePreviewBar"></div>
+                            <div class="dc-embed-content">
+                                <div class="dc-embed-title" id="welcomePreviewTitle"></div>
+                                <div class="dc-embed-desc" id="welcomePreviewDesc"></div>
+                                <img class="dc-embed-image" id="welcomePreviewImage" hidden>
+                                <div class="dc-embed-footer" id="welcomePreviewFooter"></div>
+                            </div>
+                            <img class="dc-embed-thumb" id="welcomePreviewThumb" hidden>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="save-row">
+                    <span id="welcomeStatus" class="save-status"></span>
+                    <button id="welcomePublishBtn" class="btn btn-small">PUBLIER MAINTENANT</button>
+                    <button id="welcomeSaveBtn" class="btn">ENREGISTRER</button>
+                </div>
+            </div>
+
+            <!-- ===== RÈGLEMENT ===== -->
+            <div class="card embed-card">
+                <div class="embed-card-header">
+                    <h3>📜 Règlement</h3>
+                </div>
+
+                <div class="embed-editor-body">
+                    <div class="embed-fields">
+                        <label>Salon</label>
+                        <select id="reglementChannelId"></select>
+
+                        <label>Titre</label>
+                        <input type="text" id="reglementTitle" maxlength="256">
+
+                        <label>Description</label>
+                        <textarea id="reglementDescription" maxlength="4096" rows="4"></textarea>
+
+                        <label>Couleur</label>
+                        <input type="color" id="reglementColor">
+
+                        <label>Image (URL, bandeau)</label>
+                        <input type="text" id="reglementImageUrl" placeholder="https://...">
+
+                        <label>Vignette (URL, petite image)</label>
+                        <input type="text" id="reglementThumbnailUrl" placeholder="https://...">
+
+                        <label>Footer</label>
+                        <input type="text" id="reglementFooter" maxlength="2048">
+
+                        <label>Texte du bouton</label>
+                        <input type="text" id="reglementButtonLabel" maxlength="80">
+                    </div>
+
+                    <div class="embed-preview">
+                        <div class="dc-embed">
+                            <div class="dc-embed-bar" id="reglementPreviewBar"></div>
+                            <div class="dc-embed-content">
+                                <div class="dc-embed-title" id="reglementPreviewTitle"></div>
+                                <div class="dc-embed-desc" id="reglementPreviewDesc"></div>
+                                <img class="dc-embed-image" id="reglementPreviewImage" hidden>
+                                <div class="dc-embed-footer" id="reglementPreviewFooter"></div>
+                            </div>
+                            <img class="dc-embed-thumb" id="reglementPreviewThumb" hidden>
+                        </div>
+                        <button class="dc-fake-button" id="reglementPreviewBtn">✅ J'accepte</button>
+                    </div>
+                </div>
+
+                <div class="save-row">
+                    <span id="reglementStatus" class="save-status"></span>
+                    <button id="reglementPublishBtn" class="btn btn-small">PUBLIER MAINTENANT</button>
+                    <button id="reglementSaveBtn" class="btn">ENREGISTRER</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<footer>
+    PROJET P.0 — SYSTEM INTERFACE v1.0
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+</html>
